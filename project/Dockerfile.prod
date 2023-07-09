@@ -39,5 +39,8 @@ RUN chown -R app:app $APP_HOME
 # change to the app user
 USER app
 
+# ADD THIS TO LINK PACKAGE AND
+#LABEL org.opencontainers.image.source="https://github.com/hrushikesh-github/fastapi-tdd-docker"
+LABEL org.opencontainers.image.source https://github.com/hrushikesh-github/fastapi-tdd-docker
 # run gunicorn
 CMD gunicorn --bind 0.0.0.0:$PORT app.main:app -k uvicorn.workers.UvicornWorker
