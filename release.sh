@@ -17,10 +17,10 @@ IMAGE_NAME="714116641665.dkr.ecr.us-east-1.amazonaws.com/ml-libraries:latest"
 LOCAL_PORT="5013"
 
 # SSH command to delete existing Docker container
-ssh -i ./ssh_private_key -p "${SSH_PORT}" "${SSH_USER}@${SSH_HOST}" "docker rm -f ${CONTAINER_NAME}"
+ssh -i ./ssh_private_key -o StrictHostKeyChecking=no -p "${SSH_PORT}" "${SSH_USER}@${SSH_HOST}" "docker rm -f ${CONTAINER_NAME}"
 
 # SSH command with port forwarding
-ssh -i ./ssh_private_key -p "${SSH_PORT}" -L "${LOCAL_PORT}:localhost:${LOCAL_PORT}" "${SSH_USER}@${SSH_HOST}" << EOF
+ssh -i ./ssh_private_key -o StrictHostKeyChecking=no -p "${SSH_PORT}" -L "${LOCAL_PORT}:localhost:${LOCAL_PORT}" "${SSH_USER}@${SSH_HOST}" << EOF
   aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 714116641665.dkr.ecr.us-east-1.amazonaws.com
   docker run --name "${CONTAINER_NAME}" -e PORT=8765 -e DATABASE_URL=sqlite://sqlite.db -p "${LOCAL_PORT}:8765" "${IMAGE_NAME}"
 EOF
