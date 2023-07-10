@@ -111,6 +111,8 @@ jobs:
       - name: Push to the registry
         run: docker push ${{env.ECR_REPO_NAME}}
       - name: Release
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           chmod +x ./release.sh
           ./release.sh
